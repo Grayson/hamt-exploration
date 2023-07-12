@@ -25,6 +25,16 @@ bool testArrayAllocate(void) {
 	return a.size == 2 && a.ptr != 0 && a.ptr[0] == 'd' && a.ptr[1] == 'e';
 }
 
+bool testArrayInsertWithinAllocatedSize(void) {
+	array const a = array_allocate(2);
+	array const b = array_insert(a, 'z', 0);
+	array const c = array_insert(b, 'y', 1);
+
+	return a.size == 2 && a.ptr[0] == '\0' && a.ptr[1] == '\0'
+		&& b.ptr[0] == 'z' && b.ptr[1] == '\0'
+		&& c.ptr[0] == 'z' && c.ptr[2] == 'y';
+}
+
 struct test tests[] = {
 	{ "testHash", testHash },
 	{ "arrayAllocate", testArrayAllocate },
