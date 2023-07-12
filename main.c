@@ -2,6 +2,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+#include "array.c"
+
 int ascii_hash(char c) {
 	return tolower(c) - 'a';
 }
@@ -16,8 +18,16 @@ bool testHash(void) {
 	return ascii_hash('a') == 0 && ascii_hash('b') == 1 && ascii_hash('C') == 2;
 }
 
+bool testArrayAllocate(void) {
+	array const a = array_allocate(2);
+	a.ptr[0] = 'd';
+	a.ptr[1] = 'e';
+	return a.size == 2 && a.ptr != 0 && a.ptr[0] == 'd' && a.ptr[1] == 'e';
+}
+
 struct test tests[] = {
 	{ "testHash", testHash },
+	{ "arrayAllocate", testArrayAllocate },
 };
 
 int main() {
