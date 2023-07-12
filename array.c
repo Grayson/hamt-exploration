@@ -21,7 +21,7 @@ array array_allocate(int size) {
 }
 
 array array_resize(array const orig, int const size) {
-	if (size <= orig.size) {
+	if (size < orig.size) {
 		array tmp = {
 			orig.size,
 		};
@@ -45,12 +45,6 @@ array array_resize(array const orig, int const size) {
 }
 
 array array_insert(array const orig, char const value, int const index) {
-	if (index <= orig.size) {
-		array tmp = array_resize(orig, index);
-		tmp.ptr[index] = value;
-		return tmp;
-	}
-
 	array tmp = array_resize(orig, index);
 	tmp.ptr[index] = value;
 	return tmp;

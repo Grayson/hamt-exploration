@@ -49,10 +49,20 @@ bool testArrayResize(void) {
 		&& b.ptr[3] == 'd' && b.ptr[4] == 'e'&& b.ptr[5] == '\0';
 }
 
+bool testArrayInsertResize(void) {
+	array const a = array_allocate(2);
+	a.ptr[0] = 'a';
+	a.ptr[1] = 'b';
+	array const b = array_insert(a, 'c', 2);
+	return b.size == 8 /* assume 2^3 */ 
+		&& b.ptr[0] == 'a' && b.ptr[1] == 'b' && b.ptr[2] == 'c';
+}
+
 struct test tests[] = {
 	{ "testHash", testHash },
 	{ "arrayAllocate", testArrayAllocate },
 	{ "arrayResize", testArrayResize },
+	{ "arrayInsertResize", testArrayInsertResize },
 };
 
 int main() {
