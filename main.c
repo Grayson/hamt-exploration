@@ -35,9 +35,24 @@ bool testArrayInsertWithinAllocatedSize(void) {
 		&& c.ptr[0] == 'z' && c.ptr[2] == 'y';
 }
 
+bool testArrayResize(void) {
+	array const a = array_allocate(2);
+	a.ptr[0] = 'a';
+	a.ptr[1] = 'b';
+
+	array const b = array_resize(a, 5); // Assume 2^3 resize requirement
+	b.ptr[2] = 'c';
+	b.ptr[3] = 'd';
+	b.ptr[4] = 'e';
+
+	return b.size == 8 && b.ptr[0] == 'a' && b.ptr[1] == 'b' && b.ptr[2] == 'c'
+		&& b.ptr[3] == 'd' && b.ptr[4] == 'e'&& b.ptr[5] == '\0';
+}
+
 struct test tests[] = {
 	{ "testHash", testHash },
 	{ "arrayAllocate", testArrayAllocate },
+	{ "arrayResize", testArrayResize },
 };
 
 int main() {
@@ -45,9 +60,10 @@ int main() {
 	int numberOfFailingTests = 0;
 	for (int testIndex = 0; testIndex < testCount; testIndex++) {
 		struct test * const t = &tests[testIndex];
+		printf("%d: %s ", testIndex, t->name);
 		bool const result = t->fn();
 		numberOfFailingTests += result == false;
-		printf("%d: %s -> %s\n", testIndex, t->name, result ? "passed" : "failed");
+		printf("-> %s\n", result ? "passed" : "failed");
 	}
 	if (numberOfFailingTests > 0) {
 		printf("%d failing tests\n", numberOfFailingTests);

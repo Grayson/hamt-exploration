@@ -1,3 +1,4 @@
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -19,8 +20,8 @@ array array_allocate(int size) {
 	return tmp;
 }
 
-array array_insert(array const orig, char const value, int const index) {
-	if (index < orig.size) {
+array array_resize(array const orig, int const size) {
+	if (size <= orig.size) {
 		array tmp = {
 			orig.size,
 		};
@@ -28,6 +29,29 @@ array array_insert(array const orig, char const value, int const index) {
 		return tmp;
 	}
 
-	array tmp {};
-	return tmp; /* Wildly ignoring everything! */
+	// find next size
+	int increment = 1;
+	int nextSize = pow(2, orig.size+increment);
+	while (increment++, nextSize < size) {
+		nextSize = pow(2, increment);
+	}
+
+	array tmp = {
+		nextSize,
+		calloc(nextSize, sizeof(char)),
+	};
+	/* ignored */ memcpy(tmp.ptr, orig.ptr, orig.size * sizeof(char));
+	return tmp;
+}
+
+array array_insert(array const orig, char const value, int const index) {
+	if (index <= orig.size) {
+		array tmp = array_resize(orig, index);
+		tmp.ptr[index] = value;
+		return tmp;
+	}
+
+	array tmp = array_resize(orig, index);
+	tmp.ptr[index] = value;
+	return tmp;
 }
