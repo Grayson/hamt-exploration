@@ -7,19 +7,6 @@ type nodeType[TValue any] interface {
 	retrieve(Key) TValue
 }
 
-/* Trampoline */
-
-type trampolineNode[TValue any] struct {
-}
-
-func (trampolineNode[TValue]) insert(Key, TValue) nodeType[TValue] {
-	panic("Unimplemented")
-}
-
-func (trampolineNode[TValue]) retrieve(Key) TValue {
-	panic("Unimplemented")
-}
-
 /* Value */
 
 type valueNode[TValue any] struct {
