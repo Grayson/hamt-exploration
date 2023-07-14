@@ -1,9 +1,5 @@
 package hamt
 
-type Hashable interface {
-	Hash() uint8
-}
-
 const MASK_BITS = 3 // 3 bits can index all 8 slots in array nodes
 
 type Key struct {

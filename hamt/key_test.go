@@ -59,9 +59,3 @@ func TestKeyMaskedValues(t *testing.T) {
 		})
 	}
 }
-
-type HashableInt int
-
-func (i HashableInt) Hash() uint8 {
-	return uint8(i)
-}

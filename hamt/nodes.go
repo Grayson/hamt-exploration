@@ -3,8 +3,8 @@ package hamt
 const ARRAY_NODE_SIZE = 8
 
 type nodeType[TValue any] interface {
-	insert(uint8, TValue) nodeType[TValue]
-	retrieve(uint8) TValue
+	insert(Key, TValue) nodeType[TValue]
+	retrieve(Key) TValue
 }
 
 /* Trampoline */
@@ -12,11 +12,11 @@ type nodeType[TValue any] interface {
 type trampolineNode[TValue any] struct {
 }
 
-func (trampolineNode[TValue]) insert(uint8, TValue) nodeType[TValue] {
+func (trampolineNode[TValue]) insert(Key, TValue) nodeType[TValue] {
 	panic("Unimplemented")
 }
 
-func (trampolineNode[TValue]) retrieve(uint8) TValue {
+func (trampolineNode[TValue]) retrieve(Key) TValue {
 	panic("Unimplemented")
 }
 
@@ -27,16 +27,16 @@ type valueNode[TValue any] struct {
 	value TValue
 }
 
-func (valueNode[TValue]) insert(key uint8, value TValue) nodeType[TValue] {
+func (valueNode[TValue]) insert(key Key, value TValue) nodeType[TValue] {
 	// TODO: Collisions
 	// TODO: Expansions
 	return valueNode[TValue]{
-		key,
+		key.hash,
 		value,
 	}
 }
 
-func (n valueNode[TValue]) retrieve(key uint8) TValue {
+func (n valueNode[TValue]) retrieve(key Key) TValue {
 	return n.value
 }
 
@@ -46,16 +46,16 @@ type arrayNode[TValue any] struct {
 	children [ARRAY_NODE_SIZE]nodeType[TValue]
 }
 
-func (n arrayNode[TValue]) insert(key uint8, value TValue) nodeType[TValue] {
-	index := key % ARRAY_NODE_SIZE
+func (n arrayNode[TValue]) insert(key Key, value TValue) nodeType[TValue] {
+	index := key.hash % ARRAY_NODE_SIZE
 	children := n.children
-	children[index] = valueNode[TValue]{key, value}
+	children[index] = valueNode[TValue]{key.hash, value}
 	return arrayNode[TValue]{
 		children: children,
 	}
 }
 
-func (n arrayNode[TValue]) retrieve(key uint8) TValue {
-	index := key % ARRAY_NODE_SIZE
+func (n arrayNode[TValue]) retrieve(key Key) TValue {
+	index := key.hash % ARRAY_NODE_SIZE
 	return n.children[index].retrieve(key)
 }
