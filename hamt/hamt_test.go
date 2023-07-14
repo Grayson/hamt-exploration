@@ -27,6 +27,20 @@ func TestBasicInsertAndRetrieve(t *testing.T) {
 				{1, "more"},
 			},
 		},
+		{
+			"Insert nine", // This will exceed the standard array size of 8
+			[]kvp{
+				{0, "one"},
+				{1, "two"},
+				{2, "three"},
+				{3, "four"},
+				{4, "five"},
+				{5, "six"},
+				{6, "seven"},
+				{7, "eight"},
+				{8, "nine"},
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

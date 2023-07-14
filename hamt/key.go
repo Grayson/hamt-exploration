@@ -12,6 +12,10 @@ func NewKey(hashable Hashable) Key {
 	return Key{hashable, hashable.Hash(), 0}
 }
 
+func (k *Key) canMoveToNextLevel() bool {
+	return k.depth < MASK_BITS
+}
+
 func (k *Key) moveToNextLevel() {
 	k.depth++
 }
