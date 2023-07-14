@@ -1,26 +1,20 @@
 package hamt
 
-type Trie[TValue comparable] struct {
-	root nodeType
+type Trie[TValue any] struct {
+	root nodeType[TValue]
 }
 
 func NewTrie[TValue comparable]() Trie[TValue] {
-	return Trie[TValue]{}
+	return Trie[TValue]{
+		arrayNode[TValue]{},
+	}
 }
 
 func (t *Trie[TValue]) Insert(key uint8, value TValue) Trie[TValue] {
-	return Trie[TValue]{
-		valueNode[uint8, TValue]{key, value},
-	}
+	root := t.root.insert(key, value)
+	return Trie[TValue]{root}
 }
 
-func (t *Trie[TValue]) Retrieve(key uint8) *TValue {
-	switch n := t.root.(type) {
-	case trampolineNode:
-		panic("Unimplemented")
-	case valueNode[uint8, TValue]:
-		return &n.value
-	default:
-		panic("Unknown node type!")
-	}
+func (t *Trie[TValue]) Retrieve(key uint8) TValue {
+	return t.root.retrieve(key)
 }

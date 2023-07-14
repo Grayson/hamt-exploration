@@ -20,6 +20,13 @@ func TestBasicInsertAndRetrieve(t *testing.T) {
 				{42, "test"},
 			},
 		},
+		{
+			"Insert two",
+			[]kvp{
+				{42, "test"},
+				{1, "more"},
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -33,9 +40,9 @@ func TestBasicInsertAndRetrieve(t *testing.T) {
 			// Retrieval
 			for _, x := range tt.pairs {
 				got := trie.Retrieve(x.uint8)
-				if *got != x.string {
+				if got != x.string {
 					t.Errorf("Error retrieving %v got %v, want %v", x.uint8,
-						*got, x.string)
+						got, x.string)
 				}
 			}
 		})
