@@ -1,5 +1,7 @@
 package hamt
 
+const ARRAY_NODE_SIZE = 8
+
 type nodeType[TValue any] interface {
 	canInsert() bool
 	insert(uint8, TValue) nodeType[TValue]
@@ -47,3 +49,26 @@ func (n valueNode[TValue]) retrieve(key uint8) TValue {
 	return n.value
 }
 
+/* Array */
+
+type arrayNode[TValue any] struct {
+	children [ARRAY_NODE_SIZE]nodeType[TValue]
+}
+
+func (n arrayNode[TValue]) canInsert() bool {
+	return true
+}
+
+func (n arrayNode[TValue]) insert(key uint8, value TValue) nodeType[TValue] {
+	index := key % ARRAY_NODE_SIZE
+	children := n.children
+	children[index] = valueNode[TValue]{key, value}
+	return arrayNode[TValue]{
+		children: children,
+	}
+}
+
+func (n arrayNode[TValue]) retrieve(key uint8) TValue {
+	index := key % ARRAY_NODE_SIZE
+	return n.children[index].retrieve(key)
+}
