@@ -10,11 +10,11 @@ func NewTrie[TValue comparable]() Trie[TValue] {
 	}
 }
 
-func (t *Trie[TValue]) Insert(key uint8, value TValue) Trie[TValue] {
-	root := t.root.insert(NewKey(HashableInt(key)), value)
+func (t *Trie[TValue]) Insert(key Hashable, value TValue) Trie[TValue] {
+	root := t.root.insert(NewKey(key), value)
 	return Trie[TValue]{root}
 }
 
-func (t *Trie[TValue]) Retrieve(key uint8) TValue {
-	return t.root.retrieve(NewKey(HashableInt(key)))
+func (t *Trie[TValue]) Retrieve(key Hashable) TValue {
+	return t.root.retrieve(NewKey(key))
 }

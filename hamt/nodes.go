@@ -27,10 +27,10 @@ func (n valueNode[TValue]) insert(key Key, value TValue) nodeType[TValue] {
 	}
 }
 
-func (n valueNode[TValue]) promote(key Key, value TValue, origKey uint8, origValue TValue) nodeType[TValue] {
+func (n valueNode[TValue]) promote(key Key, value TValue, origKey Hashable, origValue TValue) nodeType[TValue] {
 	if key.canMoveToNextLevel() {
 		key.moveToNextLevel()
-		updatedKey := NewKey(HashableInt(origKey))
+		updatedKey := NewKey(origKey)
 		updatedKey.depth = key.depth
 		a := arrayNode[TValue]{}.insert(updatedKey, origValue)
 		return a.insert(key, value)

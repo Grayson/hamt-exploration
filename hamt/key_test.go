@@ -2,6 +2,12 @@ package hamt
 
 import "testing"
 
+type HashableInt int // For testing purposes
+
+func (i HashableInt) Hash() uint8 {
+	return uint8(i)
+}
+
 func TestKeyMaskedValues(t *testing.T) {
 	tests := []struct {
 		name  string
