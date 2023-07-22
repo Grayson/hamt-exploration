@@ -8,6 +8,10 @@ func (i HashableInt) Hash() uint8 {
 	return uint8(i)
 }
 
+func (i HashableInt) Equals(other Hashable) bool {
+	return i == other
+}
+
 func TestKeyMaskedValues(t *testing.T) {
 	tests := []struct {
 		name  string

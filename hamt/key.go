@@ -13,7 +13,7 @@ func NewKey(hashable Hashable) Key {
 }
 
 func (k *Key) canMoveToNextLevel() bool {
-	return k.depth < MASK_BITS
+	return k.depth < (MASK_BITS - 1)
 }
 
 func (k *Key) moveToNextLevel() {
