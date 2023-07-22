@@ -46,6 +46,30 @@ func (n valueNode[TValue]) retrieve(key Key) (TValue, bool) {
 	return n.value, true
 }
 
+/* Terminal/Collision */
+
+type terminalNode[TValue any] struct {
+	keys   []Hashable
+	values []TValue
+}
+
+func (t terminalNode[TValue]) insert(key Key, value TValue) nodeType[TValue] {
+	keys := append(t.keys, key.item)
+	values := append(t.values, value)
+	return terminalNode[TValue]{
+		keys,
+		values,
+	}
+}
+
+func (t terminalNode[TValue]) retrieve(key Key) (out TValue, ok bool) {
+	for idx, k := range t.keys {
+		if k.Equals(key.item) {
+			return t.values[idx], true
+		}
+	}
+
+	return
 }
 
 /* Array */
