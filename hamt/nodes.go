@@ -4,7 +4,7 @@ const ARRAY_NODE_SIZE = 8
 
 type nodeType[TValue any] interface {
 	insert(Key, TValue) nodeType[TValue]
-	retrieve(Key) TValue
+	retrieve(Key) (TValue, bool)
 }
 
 /* Value */
@@ -42,8 +42,10 @@ func (n valueNode[TValue]) promote(key Key, value TValue, origKey Hashable, orig
 	panic("Need to handle collisions at edges of available space")
 }
 
-func (n valueNode[TValue]) retrieve(key Key) TValue {
-	return n.value
+func (n valueNode[TValue]) retrieve(key Key) (TValue, bool) {
+	return n.value, true
+}
+
 }
 
 /* Array */
@@ -66,7 +68,7 @@ func (n arrayNode[TValue]) insert(key Key, value TValue) nodeType[TValue] {
 	}
 }
 
-func (n arrayNode[TValue]) retrieve(key Key) TValue {
+func (n arrayNode[TValue]) retrieve(key Key) (out TValue, ok bool) {
 	index := key.currentMaskedValue() % ARRAY_NODE_SIZE
 	child := n.children[index]
 
@@ -77,6 +79,6 @@ func (n arrayNode[TValue]) retrieve(key Key) TValue {
 	case valueNode[TValue]:
 		return n.retrieve(key)
 	default:
-		panic("Unexpected node type")
+		return
 	}
 }

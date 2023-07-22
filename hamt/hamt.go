@@ -15,6 +15,6 @@ func (t *Trie[TValue]) Insert(key Hashable, value TValue) Trie[TValue] {
 	return Trie[TValue]{root}
 }
 
-func (t *Trie[TValue]) Retrieve(key Hashable) TValue {
+func (t *Trie[TValue]) Retrieve(key Hashable) (TValue, bool) {
 	return t.root.retrieve(NewKey(key))
 }

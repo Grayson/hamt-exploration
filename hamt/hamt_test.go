@@ -53,8 +53,8 @@ func TestBasicInsertAndRetrieve(t *testing.T) {
 
 			// Retrieval
 			for _, x := range tt.pairs {
-				got := trie.Retrieve(x.uint8)
-				if got != x.string {
+				got, ok := trie.Retrieve(HashableInt(x.uint8))
+				if got != x.string || !ok {
 					t.Errorf("Error retrieving %v got %v, want %v", x.uint8,
 						got, x.string)
 				}
