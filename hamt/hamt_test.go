@@ -48,7 +48,7 @@ func TestBasicInsertAndRetrieve(t *testing.T) {
 
 			// Inserts
 			for _, x := range tt.pairs {
-				trie = trie.Insert(x.uint8, x.string)
+				trie = trie.Insert(HashableInt(x.uint8), x.string)
 			}
 
 			// Retrieval
