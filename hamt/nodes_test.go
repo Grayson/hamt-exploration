@@ -45,6 +45,36 @@ func TestTerminalNodeCollision(t *testing.T) {
 	})
 }
 
+func TestValueNodeInsertionAtMaxLevel(t *testing.T) {
+	t.Run("Insert value at max key level", func(t *testing.T) {
+		key1 := Key{
+			foo{42},
+			0,
+			MASK_BITS - 1,
+		}
+		key2 := Key{
+			foo{1},
+			0,
+			MASK_BITS - 1,
+		}
+		n := valueNode[string]{}.insert(key1, "asdf").insert(key2, "test")
+		switch x := n.(type) {
+		case terminalNode[string]:
+			// good!
+		default:
+			t.Errorf("Unexpected node type %T", x)
+		}
+
+		if v, ok := n.retrieve(NewKey(foo{42})); !ok || v != "asdf" {
+			t.Errorf("Unexpected result (expected %v got %v; ok = %v)", "asdf", v, ok)
+		}
+
+		if v, ok := n.retrieve(NewKey(foo{1})); !ok || v != "test" {
+			t.Errorf("Unexpected result (expected %v got %v; ok = %v)", "test", v, ok)
+		}
+	})
+}
+
 type foo struct {
 	value int
 }

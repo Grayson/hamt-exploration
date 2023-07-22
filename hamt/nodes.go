@@ -37,9 +37,9 @@ func (n valueNode[TValue]) promote(key Key, value TValue, origKey Hashable, orig
 	}
 
 	// TODO: Save space!
-
-	// TODO: Collisions
-	panic("Need to handle collisions at edges of available space")
+	return terminalNode[TValue]{}.
+		insert(NewKey(n.key), n.value).
+		insert(key, value)
 }
 
 func (n valueNode[TValue]) retrieve(key Key) (TValue, bool) {
