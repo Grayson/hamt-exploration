@@ -1,6 +1,6 @@
 package hamt
 
-const MASK_BITS = 3 // 3 bits can index all 8 slots in array nodes
+const MASK_BITS = 3 // 3 bits can index all 8 slots in array nodes == log2(ARRAY_NODE_SIZE)
 
 type Key struct {
 	item  Hashable
