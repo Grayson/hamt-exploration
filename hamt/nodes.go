@@ -10,7 +10,7 @@ type nodeType[TValue any] interface {
 /* Value */
 
 type valueNode[TValue any] struct {
-	key      uint8
+	key      Hashable
 	value    TValue
 	hasValue bool
 }
@@ -21,7 +21,7 @@ func (n valueNode[TValue]) insert(key Key, value TValue) nodeType[TValue] {
 	}
 
 	return valueNode[TValue]{
-		key.hash,
+		key.item,
 		value,
 		true,
 	}
